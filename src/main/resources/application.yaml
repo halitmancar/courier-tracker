@@ -1,0 +1,36 @@
+server:
+  port: 8797
+
+spring:
+  application:
+    name: courier-tracker
+  datasource:
+    url: jdbc:h2:mem:db;DB_CLOSE_DELAY=-1
+    hikari:
+      poolName: Hikari
+      auto-commit: false
+      connection-timeout: 30000
+      minimum-idle: 5
+      idle-timeout: 10000
+      max-lifetime: 30000
+      maximum-pool-size: 20
+  jpa:
+    open-in-view: false
+    hibernate:
+      ddl-auto: create-drop
+      show-sql: true
+    defer-datasource-initialization: true
+    properties:
+      hibernate:
+        show_sql: true
+  h2:
+    console:
+      enabled: true
+  sql:
+    init:
+      mode: always
+      data-locations: classpath:dml/data.sql
+springfox:
+  documentation:
+    swagger-ui:
+      enabled: true
