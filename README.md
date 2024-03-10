@@ -54,7 +54,7 @@ The application exposes a variety of endpoints, each serving a distinct purpose 
     - `/track`: Receives live geolocation data (time, courier ID, latitude, longitude) for couriers. This is the primary endpoint for logging courier movements in relation to store locations.
 
 - **Simulation Control Endpoints**
-    - `/test/start`: Starts a simulation where predefined couriers begin sending geolocation updates to the `/track` endpoint. The simulation mimics couriers moving near and around store locations, with each courier sending a request simultaneously. After each cycle, the timestamp is incremented by 10 seconds, and the process repeats until the simulation is explicitly stopped.
+    - `/test/start`: Starts a simulation where predefined couriers begin sending geolocation updates to the `/track` endpoint. The simulation mimics couriers moving near and around store locations, with each courier sending a request simultaneously. After each cycle, the timestamp is incremented by 10 seconds, and the process repeats until the simulation is explicitly stopped. 5 minutes of simulation probably logs 5 to 15 zone entries. 
     - `/test/stop`: Halts the ongoing simulation of courier movements, stopping the sequence of automated requests to the `/track` endpoint.
 
 - **Zone Entry Logging Endpoint**
