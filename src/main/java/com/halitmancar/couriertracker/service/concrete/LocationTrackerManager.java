@@ -1,20 +1,20 @@
 package com.halitmancar.couriertracker.service.concrete;
 
 import com.halitmancar.couriertracker.dto.RequestType;
+import com.halitmancar.couriertracker.model.Courier;
 import com.halitmancar.couriertracker.model.CourierLocationLog;
 import com.halitmancar.couriertracker.model.CourierZoneEntry;
 import com.halitmancar.couriertracker.model.Store;
 import com.halitmancar.couriertracker.service.abstracts.*;
 import com.halitmancar.couriertracker.service.proxy.TotalDistanceProxy;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.DependsOn;
-import org.springframework.context.annotation.Lazy;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
 
 @Service
+@Slf4j
 public class LocationTrackerManager implements LocationTrackerService {
 
     private final double EARTH_RADIUS = 6371;
@@ -37,14 +37,15 @@ public class LocationTrackerManager implements LocationTrackerService {
     }
 
     @Override
-    public void checkAllZones(RequestType request){
+    public boolean checkAllZones(RequestType request){
         logCourierLocation(request);
-        this.storeList = storeService.findAllStores();
+        setStoreList();
+        Courier courier = this.courierService.findByCourierID(request.getCourierID()).get();
         for (Store store : storeList){
             boolean isWithinRadius = isWithinRadius(store.getLat(), store.getLng(), request.getLat(), request.getLng());
             if (isWithinRadius){
                 CourierZoneEntry courierZoneEntry = CourierZoneEntry.builder()
-                        .courier(courierService.findByCourierID(request.getCourierID()).get())
+                        .courier(courier)
                         .store(store)
                         .time(request.getTime())
                         .build();
@@ -52,8 +53,10 @@ public class LocationTrackerManager implements LocationTrackerService {
                 courierZoneEntry.setLng(request.getLng());
 
                 courierZoneEntryService.save(courierZoneEntry);
+                log.info("Courier with name {} entered the zone of store {}",courier.getCourierName(), store.getStoreName());
             }
         }
+        return true;
     }
 
     private boolean isWithinRadius(double lat1, double lon1, double lat2, double lon2) {
@@ -72,8 +75,6 @@ public class LocationTrackerManager implements LocationTrackerService {
                         Math.sin(dLon / 2) * Math.sin(dLon / 2);
 
         double c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
-        if (EARTH_RADIUS * c*1000<1000)
-        System.out.println(EARTH_RADIUS * c * 1000);
 
         return EARTH_RADIUS * c * 1000;
     }
@@ -87,6 +88,12 @@ public class LocationTrackerManager implements LocationTrackerService {
         courierLocationLog.setLng(request.getLng());
         totalDistanceService.update(courierLocationLog);
         this.courierLocationLogService.save(courierLocationLog);
+    }
+
+    private void setStoreList(){
+        if (this.storeList.isEmpty()){
+            this.storeList = storeService.findAllStores();
+        }
     }
 
 }

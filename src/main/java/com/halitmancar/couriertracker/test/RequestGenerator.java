@@ -2,6 +2,7 @@ package com.halitmancar.couriertracker.test;
 
 import com.halitmancar.couriertracker.dto.GeolocationDto;
 import com.halitmancar.couriertracker.dto.RequestType;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
 import java.time.Instant;
@@ -10,28 +11,26 @@ import java.util.Map;
 import java.util.Random;
 
 @Component
+@Slf4j
 public class RequestGenerator implements RequestGeneratorService {
 
-    private RequestGeneratorClient requestGeneratorClient;
-    private final Double MIN_LAT = 40.9632463;
-    private final Double MAX_LAT = 41.055783;
-    private final Double MIN_LNG = 28.6552262;
-    private final Double MAX_LNG = 29.1244229;
+    private LocationTrackerClient locationTrackerClient;
     private boolean firstStart = true;
     private Integer COURIER_ID = 1;
     private Instant TIME = Instant.now();
     private Map<Integer, GeolocationDto> courierLocations = new HashMap<>();
     private Boolean testStarted = false;
 
-    public RequestGenerator(RequestGeneratorClient requestGeneratorClient) {
-        this.requestGeneratorClient = requestGeneratorClient;
+    public RequestGenerator(LocationTrackerClient locationTrackerClient) {
+        this.locationTrackerClient = locationTrackerClient;
     }
 
     @Override
     public void startSendingRequests() {
         this.testStarted = Boolean.TRUE;
+        log.info("Test started...");
         while (testStarted) {
-            requestGeneratorClient.sendCourierLog(generateNewRequest());
+            locationTrackerClient.sendCourierLog(generateNewRequest());
             COURIER_ID++;
         }
     }
@@ -39,6 +38,7 @@ public class RequestGenerator implements RequestGeneratorService {
     @Override
     public void stopSendingRequests(){
         this.testStarted = Boolean.FALSE;
+        log.info("Test stopped.");
     }
 
     private RequestType generateNewRequest() {

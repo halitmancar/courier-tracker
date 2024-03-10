@@ -20,4 +20,5 @@ public class StoreManager implements StoreService {
     public List<Store> findAllStores() {
         return this.repository.findAll();
     }
+
 }

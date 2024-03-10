@@ -6,6 +6,6 @@ import com.halitmancar.couriertracker.model.CourierZoneEntry;
 import java.util.List;
 
 public interface CourierZoneEntryService {
-    void save(CourierZoneEntry courierZoneEntry);
+    boolean save(CourierZoneEntry courierZoneEntry);
     List<CourierZoneEntryDto> getZoneEntries();
 }

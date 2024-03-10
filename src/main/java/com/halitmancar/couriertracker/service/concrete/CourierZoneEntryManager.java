@@ -5,6 +5,7 @@ import com.halitmancar.couriertracker.mapping.ModelMapperManager;
 import com.halitmancar.couriertracker.model.CourierZoneEntry;
 import com.halitmancar.couriertracker.repository.CourierZoneEntryRepository;
 import com.halitmancar.couriertracker.service.abstracts.CourierZoneEntryService;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -14,6 +15,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
+@Slf4j
 public class CourierZoneEntryManager implements CourierZoneEntryService {
     private final Integer zoneEntryRefreshTime = 60;
 
@@ -24,9 +26,12 @@ public class CourierZoneEntryManager implements CourierZoneEntryService {
     }
 
     @Override
-    public void save(CourierZoneEntry courierZoneEntry){
-        if (checkLastZoneEntryOfCourier(courierZoneEntry))
+    public boolean save(CourierZoneEntry courierZoneEntry){
+        if (checkLastZoneEntryOfCourier(courierZoneEntry)){
             this.repository.save(courierZoneEntry);
+            return true;
+        }
+            return false;
     }
 
     @Override
@@ -36,7 +41,6 @@ public class CourierZoneEntryManager implements CourierZoneEntryService {
                 .map(zoneEntry, CourierZoneEntryDto.class)).collect(Collectors.toList());
     }
 
-    //TODO: bunu proxy DP taşı. Storeu da kontrol et. In memory cache.
     private boolean checkLastZoneEntryOfCourier(CourierZoneEntry courierZoneEntry){
         CourierZoneEntry lastZoneEntryOfCourier = repository.findFirstByCourierAndStoreOrderByTimeDesc
                 (courierZoneEntry.getCourier(), courierZoneEntry.getStore());
@@ -50,6 +54,7 @@ public class CourierZoneEntryManager implements CourierZoneEntryService {
         if (duration.toSeconds() > this.zoneEntryRefreshTime){
             return true;
         } else {
+            log.info("Courier is already logged in this zone in less than 1 minute.");
             return false;
         }
     }

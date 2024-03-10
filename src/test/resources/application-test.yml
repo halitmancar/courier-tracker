@@ -18,11 +18,11 @@ spring:
     open-in-view: false
     hibernate:
       ddl-auto: create-drop
-      show-sql: false
+      show-sql: true
     defer-datasource-initialization: true
     properties:
       hibernate:
-        show_sql: false
+        show_sql: true
   h2:
     console:
       enabled: true

@@ -5,7 +5,7 @@ import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.PostMapping;
 
 @FeignClient(value = "api-test-service", url = "http://localhost:8797")
-public interface RequestGeneratorClient {
+public interface LocationTrackerClient {
 
     @PostMapping("/track")
     public void sendCourierLog(RequestType request);

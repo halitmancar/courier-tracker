@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 
 @RestController
-@RequestMapping("/zone/entry")
+@RequestMapping("/zone-entry")
 public class CourierZoneEntryController {
 
     private CourierZoneEntryService courierZoneEntryService;
