@@ -59,11 +59,11 @@ public class RequestGenerator implements RequestGeneratorService {
     @Override
     public void setCourierFirstLocations(){
         if (!firstStart) return;
-        courierLocations.put(1, GeolocationDto.builder().lat(40.978191).lng(28.876219).build());
-        courierLocations.put(2, GeolocationDto.builder().lat(41.024927).lng(28.976921).build());
-        courierLocations.put(3, GeolocationDto.builder().lat(41.015844).lng(28.747931).build());
-        courierLocations.put(4, GeolocationDto.builder().lat(40.970769).lng(29.056387).build());
-        courierLocations.put(5, GeolocationDto.builder().lat(40.980059).lng(29.006996).build());
+        courierLocations.put(1, GeolocationDto.builder().lat(40.968191).lng(29.096219).build());
+        courierLocations.put(2, GeolocationDto.builder().lat(41.044927).lng(29.016921).build());
+        courierLocations.put(3, GeolocationDto.builder().lat(41.004844).lng(28.667931).build());
+        courierLocations.put(4, GeolocationDto.builder().lat(40.980769).lng(29.086387).build());
+        courierLocations.put(5, GeolocationDto.builder().lat(40.980059).lng(29.106996).build());
         courierLocations.put(6, GeolocationDto.builder().lat(40.998191).lng(29.126219).build());
         courierLocations.put(7, GeolocationDto.builder().lat(40.975927).lng(29.103921).build());
         courierLocations.put(8, GeolocationDto.builder().lat(41.000014).lng(28.687931).build());

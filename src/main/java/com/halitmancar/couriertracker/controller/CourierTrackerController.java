@@ -4,6 +4,7 @@ import com.halitmancar.couriertracker.dto.CourierLocationLogDto;
 import com.halitmancar.couriertracker.dto.TotalDistanceDto;
 import com.halitmancar.couriertracker.service.abstracts.CourierLocationLogService;
 import com.halitmancar.couriertracker.service.abstracts.TotalDistanceService;
+import com.halitmancar.couriertracker.service.proxy.TotalDistanceProxy;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -15,10 +16,11 @@ import java.util.List;
 @RequestMapping("/courier")
 public class CourierTrackerController {
 
-    private TotalDistanceService totalDistanceService;
+    private TotalDistanceProxy totalDistanceService;
     private CourierLocationLogService courierLocationLogService;
 
-    public CourierTrackerController(TotalDistanceService totalDistanceService, CourierLocationLogService courierLocationLogService) {
+    public CourierTrackerController(CourierLocationLogService courierLocationLogService,
+                                    TotalDistanceProxy totalDistanceService) {
         this.totalDistanceService= totalDistanceService;
         this.courierLocationLogService = courierLocationLogService;
     }

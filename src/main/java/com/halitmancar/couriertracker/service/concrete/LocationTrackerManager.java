@@ -5,7 +5,10 @@ import com.halitmancar.couriertracker.model.CourierLocationLog;
 import com.halitmancar.couriertracker.model.CourierZoneEntry;
 import com.halitmancar.couriertracker.model.Store;
 import com.halitmancar.couriertracker.service.abstracts.*;
+import com.halitmancar.couriertracker.service.proxy.TotalDistanceProxy;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.DependsOn;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -21,11 +24,11 @@ public class LocationTrackerManager implements LocationTrackerService {
     private CourierZoneEntryService courierZoneEntryService;
     private CourierService courierService;
     private CourierLocationLogService courierLocationLogService;
-    private TotalDistanceService totalDistanceService;
+    private TotalDistanceProxy totalDistanceService;
 
     public LocationTrackerManager(StoreService storeService, CourierZoneEntryService courierZoneEntryService,
                                   CourierService courierService, CourierLocationLogService courierLocationLogService,
-                                  TotalDistanceService totalDistanceService) {
+                                  TotalDistanceProxy totalDistanceService) {
         this.storeService = storeService;
         this.courierZoneEntryService = courierZoneEntryService;
         this.courierService = courierService;

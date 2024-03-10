@@ -6,7 +6,7 @@ import com.halitmancar.couriertracker.model.CourierLocationLog;
 import java.util.List;
 
 public interface TotalDistanceService {
-    void update(CourierLocationLog courierLocationLog);
+    Double update(CourierLocationLog courierLocationLog);
     Double getTotalTravelDistance(Integer courierID);
     List<TotalDistanceDto> getAllTotalTravelDistances();
 }

@@ -8,6 +8,9 @@ import com.halitmancar.couriertracker.repository.TotalDistanceRepository;
 import com.halitmancar.couriertracker.service.abstracts.CourierService;
 import com.halitmancar.couriertracker.service.abstracts.LocationTrackerService;
 import com.halitmancar.couriertracker.service.abstracts.TotalDistanceService;
+import lombok.NoArgsConstructor;
+import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
@@ -15,24 +18,22 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.stream.Collectors;
 
-@Service
+@Service("totalDistanceManager")
 public class TotalDistanceManager implements TotalDistanceService {
 
+    @Autowired
     private TotalDistanceRepository totalDistanceRepository;
+    @Autowired
+    @Lazy
     private LocationTrackerService locationTrackerService;
-
-    public TotalDistanceManager(TotalDistanceRepository totalDistanceRepository,
-                                @Lazy LocationTrackerService locationTrackerService) {
-        this.totalDistanceRepository = totalDistanceRepository;
-        this.locationTrackerService = locationTrackerService;
-    }
 
     @Override
     @Async
-    public void update(CourierLocationLog courierLocationLog) {
+    public Double update(CourierLocationLog courierLocationLog) {
         TotalDistance totalDistance = totalDistanceRepository.findByCourier(courierLocationLog.getCourier());
         updateTotalDistance(totalDistance, courierLocationLog);
         totalDistanceRepository.save(totalDistance);
+        return totalDistance.getTotalDistanceTravelled();
     }
 
     @Override
